@@ -15,7 +15,7 @@ app.post("/chat", async (req, res) => {
     const userMessage = req.body.message;
 
     const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4o",
       messages: [
         { role: "system", content: "You are an AI chatbot inside a Roblox game. Respond clearly and naturally." },
         { role: "user", content: userMessage }

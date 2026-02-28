@@ -23,11 +23,11 @@ app.post("/chat", async (req, res) => {
       body: JSON.stringify({
         contents: [
           {
-            role: "system",
+            role: "user",
             parts: [
               {
                 text:
-                  "You are an AI inside a Roblox game. When appropriate, you may use multiple lines using \\n. Keep responses friendly and clear."
+                  "You are an AI inside a Roblox game. Keep responses friendly. You may use multiple lines using \\n when helpful."
               }
             ]
           },
@@ -37,7 +37,7 @@ app.post("/chat", async (req, res) => {
           }
         ],
         generationConfig: {
-          maxOutputTokens: 500,
+          maxOutputTokens: 650,
           temperature: 0.7,
           responseMimeType: "text/plain"
         }

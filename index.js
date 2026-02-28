@@ -23,15 +23,25 @@ app.post("/chat", async (req, res) => {
       body: JSON.stringify({
         contents: [
           {
-            role: "user",
-            parts: [{ text: userMessage }],
+            role: "system",
+            parts: [
+              {
+                text:
+                  "You are an AI inside a Roblox game. When appropriate, you may use multiple lines using \\n. Keep responses friendly and clear."
+              }
+            ]
           },
+          {
+            role: "user",
+            parts: [{ text: userMessage }]
+          }
         ],
         generationConfig: {
           maxOutputTokens: 500,
           temperature: 0.7,
-        },
-      }),
+          responseMimeType: "text/plain"
+        }
+      })
     });
 
     const data = await response.json();

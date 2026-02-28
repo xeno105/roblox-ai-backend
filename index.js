@@ -29,11 +29,12 @@ app.post("/chat", async (req, res) => {
       }),
     });
 
-    const data = await response.json();
+const data = await response.json();
+console.log("GEMINI RAW RESPONSE:", JSON.stringify(data, null, 2));
 
-    const reply =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "Sorry, I couldn't generate a response.";
+const reply =
+  data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+  "Sorry, I couldn't generate a response.";
 
     res.json({ reply });
   } catch (err) {

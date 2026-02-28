@@ -1,38 +1,45 @@
 import express from "express";
 import cors from "cors";
-import OpenAI from "openai";
+import bodyParser from "body-parser";
+import fetch from "node-fetch";
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+const API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_URL =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" +
+  API_KEY;
 
 app.post("/chat", async (req, res) => {
   try {
     const userMessage = req.body.message;
 
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        { role: "system", content: "You are an AI chatbot inside a Roblox game. Respond clearly and naturally." },
-        { role: "user", content: userMessage }
-      ]
+    const response = await fetch(GEMINI_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: userMessage }],
+          },
+        ],
+      }),
     });
 
-    const reply = completion.choices[0].message.content;
+    const data = await response.json();
+
+    const reply =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "Sorry, I couldn't generate a response.";
+
     res.json({ reply });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "AI request failed" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ reply: "Server error." });
   }
 });
 
-app.get("/", (req, res) => {
-  res.send("Roblox AI backend is running.");
-});
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(3000, () => console.log("Gemini backend running on port 3000"));

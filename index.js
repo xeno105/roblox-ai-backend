@@ -27,13 +27,10 @@ app.post("/chat", async (req, res) => {
     },
   ],
   generationConfig: {
-    maxOutputTokens: 500,   // increase or decrease as you want
+    maxOutputTokens: 500,
     temperature: 0.7
   }
 })
-      }),
-    });
-
 const data = await response.json();
 console.log("GEMINI RAW RESPONSE:", JSON.stringify(data, null, 2));
 

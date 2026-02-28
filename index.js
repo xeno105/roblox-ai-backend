@@ -19,13 +19,18 @@ app.post("/chat", async (req, res) => {
     const response = await fetch(GEMINI_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: userMessage }],
-          },
-        ],
+     body: JSON.stringify({
+  contents: [
+    {
+      role: "user",
+      parts: [{ text: userMessage }],
+    },
+  ],
+  generationConfig: {
+    maxOutputTokens: 500,   // increase or decrease as you want
+    temperature: 0.7
+  }
+})
       }),
     });
 
